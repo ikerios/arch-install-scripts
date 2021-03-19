@@ -1,0 +1,70 @@
+
+pacman -S snapper
+
+###########################
+/etc/mkinitcpio.conf
+
+MODULES=(btrfs vfat)
+HOOKS=(base udev autodetect keyboard keymap modconf block encrypt filesystems fsck)
+###########################
+
+###########################
+/etc/default/grub
+
+GRUB_CMDLINE_LINUX="cryptdevice=<UUUID_DEVICE_ROOT>:cryptroot root=/dev/mapper/cryptroot"
+GRUB_ENABLE_CRYPTODISK=y
+###########################
+
+
+umount /.snapshots
+rm -r /.snapshots/
+snapper -c root create-config /
+btrfs subvolume delete /.snapshots/
+mkdir /.snapshots
+mount -a
+chmod 750 /.snapshots/
+
+###########################
+nano /etc/snapper/configs/root
+
+ALLOW_USERS="xon"
+
+TIMELINE_MIN_AGE="1800"
+TIMELINE_LIMIT_HOURLY="5"
+TIMELINE_LIMIT_DAILY="7"
+TIMELINE_LIMIT_WEEKLY="0"
+TIMELINE_LIMIT_MONTHLY="0"
+TIMELINE_LIMIT_YEARLY="0"
+
+###########################
+
+systemctl enable --now snapper-timeline.timer 
+systemctl enable --now snapper-cleanup.timer 
+
+
+paru -S snap-pac-grub snapper-gui rsync
+
+mkdir /etc/pacman.d/hooks
+
+###########################
+nano /etc/pacman.d/hooks/50-bootbackup.hook 
+
+
+[[Trigger]
+Operation = Upgrade
+Operation = Install
+Operation = Remove
+Type = Path
+Target = boot/*
+
+[Action]
+Depends = rsync
+Description = Backup /boot...
+When = PreTransaction
+Exec = /usr/bin/rsync -a --delete /boot /.bootbackup
+
+###########################
+
+chmod a+rx /.snapshots
+chown :xon /.snapshots
+

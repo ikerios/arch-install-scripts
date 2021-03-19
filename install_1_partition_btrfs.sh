@@ -5,7 +5,7 @@
 parted -s /dev/nvme0n1 mklabel gpt mkpart ESP fat32 1MiB 512MiB set 1 boot on mkpart primary 512MiB 100%
 
 mkfs.fat -F32 /dev/nvme0n1p1
-cryptsetup luksFormat -y -v /dev/nvme0n1p2
+cryptsetup luksFormat --type luks2 -y -v /dev/nvme0n1p2
 cryptsetup open /dev/nvme0n1p2 cryptroot
 mkfs.btrfs /dev/mapper/cryptroot
 mount /dev/mapper/cryptroot /mnt
