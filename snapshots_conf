@@ -11,7 +11,7 @@ HOOKS=(base udev autodetect keyboard keymap modconf block encrypt filesystems fs
 ###########################
 /etc/default/grub
 
-GRUB_CMDLINE_LINUX="cryptdevice=<UUUID_DEVICE_ROOT>:cryptroot root=/dev/mapper/cryptroot"
+GRUB_CMDLINE_LINUX="cryptdevice=UUID=00000000-0000-0000-0000-000000000000:cryptroot root=/dev/mapper/cryptroot"
 GRUB_ENABLE_CRYPTODISK=y
 ###########################
 
