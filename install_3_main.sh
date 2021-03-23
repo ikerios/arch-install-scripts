@@ -16,16 +16,15 @@ echo "::1       localhost" >> /etc/hosts
 echo "127.0.1.1 infinity.home infinity" >> /etc/hosts
 echo root:$INST_PWD | chpasswd
 
-pacman -Syy --noconfirm --needed base-devel bash-completion openssh grub efibootmgr reflector flatpak terminus-font firewalld dosfstools btrfs-progs e2fsprogs
+pacman -Syy --noconfirm --needed base-devel bash-completion openssh grub efibootmgr reflector flatpak terminus-font firewalld networkmanager dosfstools btrfs-progs e2fsprogs
 
 reflector -c Italy -a 12 --sort rate --save /etc/pacman.d/mirrorlist
 
 grub-install --recheck --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
 grub-mkconfig -o /boot/grub/grub.cfg
 
+systemctl enable NetworkManager
 systemctl enable sshd
-systemctl enable systemd-networkd.service
-systemctl enable systemd-resolved.service
 systemctl enable reflector.timer
 systemctl enable fstrim.timer
 systemctl enable firewalld
@@ -34,12 +33,6 @@ useradd -m $INST_USER
 echo $INST_USER:$INST_PWD | chpasswd
 
 echo "$INST_USER ALL=(ALL) ALL" >> /etc/sudoers.d/$INST_USER
-
-## Network manager
-# systemctl disable systemd-networkd.service
-# systemctl disable systemd-resolved.service
-# pacman -S --noconfirm --needed networkmanager network-manager-applet
-# systemctl enable NetworkManager
 
 mkinitcpio -P
 
