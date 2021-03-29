@@ -1,0 +1,15 @@
+###########################
+/etc/mkinitcpio.conf
+
+MODULES=(btrfs vfat)
+HOOKS=(base udev autodetect consolefont keyboard keymap modconf block encrypt openswap resume filesystems fsck)
+###########################
+
+###########################
+/etc/default/grub
+
+GRUB_CMDLINE_LINUX="cryptdevice=UUID=00000000-0000-0000-0000-000000000000:cryptroot root=/dev/mapper/cryptroot resume=/dev/mapper/swaproot"
+GRUB_ENABLE_CRYPTODISK=y
+###########################
+
+mkinitcpio -P

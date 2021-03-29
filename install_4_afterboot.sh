@@ -24,29 +24,32 @@ sudo systemctl enable tlp
 sudo systemctl enable acpid
 
 ## kvm, qemu, libvirt
-sudo pacman -S --noconfirm --needed virt-manager qemu qemu-arch-extra bridge-utils vde2 ovmf
+sudo pacman -S --noconfirm --needed libvirt qemu bridge-utils vde2 ovmf virt-manager
 sudo usermod -aG libvirt $INST_USER
 sudo systemctl enable libvirtd
 
 ## add aur helper
-git clone https://aur.archlinux.org/pikaur.git
-cd pikaur/
+git clone https://aur.archlinux.org/paru-bin.git
+cd paru-bin/
 makepkg -si --noconfirm
 
 ## tuxedo laptop
-pikaur -S --noconfirm --needed linux-headers tuxedo-keyboard tuxedo-control-center
+paru -S --noconfirm --needed linux-headers tuxedo-keyboard tuxedo-control-center
 
-## tuxedo laptop (system 76 stuff for clevo laptops)
-pikaur -S --noconfirm --needed system76-acpi-dkms system76-dkms system76-driver system76-firmware system76-firmware-daemon system76-io-dkms system76-power
+## system 76 stuff for clevo laptops
+#paru -S --noconfirm --needed system76-acpi-dkms system76-dkms system76-driver system76-firmware system76-firmware-daemon system76-io-dkms system76-power
 
 ## arch-x-icons-theme
-pikaur -S --noconfirm --needed arc-x-icons-theme
+#paru -S --noconfirm --needed arc-x-icons-theme
 
 ## snapper
-pikaur -S --noconfirm --needed snapper snap-pac-grub snapper-gui-git
+paru -S --noconfirm --needed snapper snap-pac-grub snapper-gui-git
+
+## Plymouth
+paru -S --noconfirm --needed plymouth gdm-plymouth tuxedo-plymouth-one
 
 ## Pop OS like gnome
-pikaur -S --noconfirm --needed plymouth gdm-plymouth pop-theme system76-power system76-wallpapers gnome-control-center-system76 gnome-shell-extension-dash-to-dock gnome-shell-extension-dash-to-panel gnome-shell-extension-pop-shell gnome-terminal-transparency
+#paru -S --noconfirm --needed pop-theme system76-power system76-wallpapers gnome-control-center-system76 gnome-shell-extension-dash-to-dock gnome-shell-extension-dash-to-panel gnome-shell-extension-pop-shell gnome-terminal-transparency
 
 sudo mkinitcpio -P
 

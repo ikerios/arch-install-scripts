@@ -1,20 +1,6 @@
 
-pacman -S snapper
-
-###########################
-/etc/mkinitcpio.conf
-
-MODULES=(btrfs vfat)
-HOOKS=(base udev autodetect keyboard keymap modconf block encrypt filesystems fsck)
-###########################
-
-###########################
-/etc/default/grub
-
-GRUB_CMDLINE_LINUX="cryptdevice=UUID=00000000-0000-0000-0000-000000000000:cryptroot root=/dev/mapper/cryptroot"
-GRUB_ENABLE_CRYPTODISK=y
-###########################
-
+pacman -S snapper rsync snap-pac
+paru -S snap-pac-grub snapper-gui rsync
 
 umount /.snapshots
 rm -r /.snapshots/
@@ -22,7 +8,8 @@ snapper -c root create-config /
 btrfs subvolume delete /.snapshots/
 mkdir /.snapshots
 mount -a
-chmod 750 /.snapshots/
+chmod 750 /.snapshots
+chown :xon /.snapshots
 
 ###########################
 nano /etc/snapper/configs/root
@@ -40,9 +27,6 @@ TIMELINE_LIMIT_YEARLY="0"
 
 systemctl enable --now snapper-timeline.timer 
 systemctl enable --now snapper-cleanup.timer 
-
-
-paru -S snap-pac-grub snapper-gui rsync
 
 mkdir /etc/pacman.d/hooks
 
@@ -64,7 +48,3 @@ When = PreTransaction
 Exec = /usr/bin/rsync -a --delete /boot /.bootbackup
 
 ###########################
-
-chmod a+rx /.snapshots
-chown :xon /.snapshots
-
