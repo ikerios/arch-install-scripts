@@ -18,7 +18,7 @@ echo "::1       localhost" >> /etc/hosts
 echo "127.0.1.1 infinity.home infinity" >> /etc/hosts
 echo root:$INST_PWD | chpasswd
 
-pacman -Syy --noconfirm --needed base-devel bash-completion openssh grub efibootmgr reflector flatpak terminus-font networkmanager dosfstools btrfs-progs e2fsprogs
+pacman -Syy --noconfirm --needed base-devel bash-completion openssh grub efibootmgr reflector terminus-font networkmanager dosfstools btrfs-progs e2fsprogs
 
 reflector -c Italy -a 1 --save /etc/pacman.d/mirrorlist
 
@@ -33,11 +33,6 @@ useradd -m $INST_USER
 echo $INST_USER:$INST_PWD | chpasswd
 
 echo "$INST_USER ALL=(ALL) ALL" >> /etc/sudoers.d/$INST_USER
-
-echo "run_hook ()
-{
-    cryptsetup open /dev/nvme0n1p2 swapDevice
-}" >> /etc/initcpio/hooks/openswap
 
 
 /bin/echo -e "\e[1;32mDone! Type exit, umount -a and reboot.\e[0m"

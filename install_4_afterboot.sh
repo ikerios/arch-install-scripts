@@ -5,7 +5,7 @@ INST_USER=xon
 INST_PWD=password
 
 ## Basic Desktop
-sudo pacman -S --noconfirm --needed avahi reflector pipewire pipewire-alsa pipewire-pulse pipewire-jack jack2 xdg-user-dirs xdg-utils gvfs gvfs-smb nfs-utils bluez bluez-utils cups hplip
+sudo pacman -S --noconfirm --needed avahi reflector pipewire pipewire-alsa pipewire-pulse pipewire-jack jack2 xdg-user-dirs xdg-utils bluez bluez-utils cups hplip
 sudo systemctl enable bluetooth
 sudo systemctl enable avahi-daemon
 sudo systemctl enable cups

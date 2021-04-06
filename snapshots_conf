@@ -31,7 +31,7 @@ systemctl enable --now snapper-cleanup.timer
 mkdir /etc/pacman.d/hooks
 
 ###########################
-nano /etc/pacman.d/hooks/50-bootbackup.hook 
+nano /etc/pacman.d/hooks/50-efibackup.hook 
 
 
 [[Trigger]
@@ -39,12 +39,12 @@ Operation = Upgrade
 Operation = Install
 Operation = Remove
 Type = Path
-Target = boot/*
+Target = efi/*
 
 [Action]
 Depends = rsync
-Description = Backup /boot...
+Description = Backup /efi...
 When = PreTransaction
-Exec = /usr/bin/rsync -a --delete /boot /.bootbackup
+Exec = /usr/bin/rsync -a --delete /efi /.efibackup
 
 ###########################
