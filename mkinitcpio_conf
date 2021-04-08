@@ -2,7 +2,7 @@
 /etc/mkinitcpio.conf
 
 HOOKS=(base udev autodetect consolefont keyboard keymap modconf block encrypt resume filesystems fsck)
-HOOKS=(base systemd autodetect  keyboard sd-console modconf block sd-encrypt filesystems fsck)
+HOOKS=(base systemd autodetect keyboard sd-vconsole modconf block sd-encrypt filesystems fsck)
 ###########################
 
 ###########################
