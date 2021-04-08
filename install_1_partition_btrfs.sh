@@ -2,7 +2,7 @@
 
 ## partitioning, formatting and mounting
 
-parted -s /dev/nvme0n1 mklabel gpt mkpart ESP fat32 1MiB 513MiB set 1 boot on mkpart "root" linux 513MiB 100%
+parted -s /dev/nvme0n1 mklabel gpt mkpart ESP fat32 1MiB 513MiB set 1 boot on mkpart "root" 513MiB 100%
 
 # root partition
 cryptsetup luksFormat --type luks2 -y -v /dev/nvme0n1p2
