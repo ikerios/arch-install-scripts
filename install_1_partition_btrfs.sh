@@ -2,11 +2,18 @@
 
 ## partitioning, formatting and mounting
 
-parted -s /dev/nvme0n1 mklabel gpt mkpart ESP fat32 1MiB 513MiB set 1 boot on mkpart "root" 513MiB 100%
+parted -s /dev/nvme0n1 mklabel gpt mkpart ESP fat32 1MiB 513MiB set 1 boot on mkpart "swap" linux-swap 513MiB 33281MiB mkpart "root" 33281MiB 100%
+
+
+# swap partition
+cryptsetup luksFormat --type luks2 -y -v /dev/nvme0n1p2
+cryptsetup open /dev/nvme0n1p2 cryptswap
+mkswap /dev/mapper/cryptswap
+swapon /dev/cryptswap
 
 # root partition
-cryptsetup luksFormat --type luks2 -y -v /dev/nvme0n1p2
-cryptsetup open /dev/nvme0n1p2 cryptroot
+cryptsetup luksFormat --type luks2 -y -v /dev/nvme0n1p3
+cryptsetup open /dev/nvme0n1p3 cryptroot
 mkfs.btrfs /dev/mapper/cryptroot
 mount /dev/mapper/cryptroot /mnt
 btrfs su cr /mnt/@

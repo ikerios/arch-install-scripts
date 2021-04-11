@@ -22,9 +22,6 @@ pacman -Syy --noconfirm --needed base-devel bash-completion openssh grub efiboot
 
 reflector -c Italy -a 1 --save /etc/pacman.d/mirrorlist
 
-#grub-install --recheck --target=x86_64-efi --efi-directory=/efi --bootloader-id=GRUB
-#grub-mkconfig -o /boot/grub/grub.cfg
-
 systemctl enable NetworkManager
 systemctl enable sshd
 systemctl enable fstrim.timer

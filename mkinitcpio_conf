@@ -1,6 +1,17 @@
+/etc/crypttab.initramfs
+
+# <name>	<device>					<password>		<options>
+cryptroot	UUID="a8521fb1-1e0f-47a3-8cb7-5202a5d9973c"	/.keyfile
+
+
+
+
 ###########################
 /etc/mkinitcpio.conf
 
+
+BINARIES=(btrfs nano)
+FILES=(/.keyfile)
 HOOKS=(base udev autodetect consolefont keyboard keymap modconf block encrypt resume filesystems fsck)
 HOOKS=(base systemd autodetect keyboard sd-vconsole modconf block sd-encrypt filesystems fsck)
 ###########################
@@ -9,7 +20,7 @@ HOOKS=(base systemd autodetect keyboard sd-vconsole modconf block sd-encrypt fil
 /etc/default/grub
 
 GRUB_CMDLINE_LINUX="cryptdevice=UUID=00000000-0000-0000-0000-000000000000:cryptroot root=/dev/mapper/cryptroot"
-GRUB_CMDLINE_LINUX="rd.luks.name=00000000-0000-0000-0000-000000000000=cryptroot root=/dev/mapper/cryptroot"
+GRUB_CMDLINE_LINUX="rd.luks.name=00000000-0000-0000-0000-000000000000=cryptroot root=/dev/mapper/cryptroot resume=/dev/mapper/cryptswap"
 
 GRUB_ENABLE_CRYPTODISK=y
 ###########################
@@ -19,3 +30,5 @@ mkinitcpio -P
 
 grub-install --recheck --target=x86_64-efi --efi-directory=/efi --bootloader-id=Arch
 grub-mkconfig -o /boot/grub/grub.cfg
+
+

@@ -1,6 +1,6 @@
 
-pacman -S snapper rsync snap-pac
-paru -S snap-pac-grub snapper-gui rsync
+pacman -S snapper snap-pac
+paru -S snapper-gui snap-pac-grub
 
 umount /.snapshots
 rm -r /.snapshots/
@@ -27,24 +27,3 @@ TIMELINE_LIMIT_YEARLY="0"
 
 systemctl enable --now snapper-timeline.timer 
 systemctl enable --now snapper-cleanup.timer 
-
-mkdir /etc/pacman.d/hooks
-
-###########################
-nano /etc/pacman.d/hooks/50-efibackup.hook 
-
-
-[[Trigger]
-Operation = Upgrade
-Operation = Install
-Operation = Remove
-Type = Path
-Target = efi/*
-
-[Action]
-Depends = rsync
-Description = Backup /efi...
-When = PreTransaction
-Exec = /usr/bin/rsync -a --delete /efi /.efibackup
-
-###########################
