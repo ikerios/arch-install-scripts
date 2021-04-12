@@ -9,7 +9,7 @@ parted -s /dev/nvme0n1 mklabel gpt mkpart ESP fat32 1MiB 513MiB set 1 boot on mk
 cryptsetup luksFormat --type luks2 -y -v /dev/nvme0n1p2
 cryptsetup open /dev/nvme0n1p2 cryptswap
 mkswap /dev/mapper/cryptswap
-swapon /dev/cryptswap
+swapon /dev/mapper/cryptswap
 
 # root partition
 cryptsetup luksFormat --type luks2 -y -v /dev/nvme0n1p3
