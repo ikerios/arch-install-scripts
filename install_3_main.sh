@@ -44,6 +44,15 @@ GRUB_LINE_CRYPT=GRUB_CMDLINE_LINUX=\""rd.luks.name=$ROOT_UUID=cryptroot rd.luks.
 #echo $GRUB_LINE_CRYPT
 sed -i "/^GRUB_CMDLINE_LINUX=/c$GRUB_LINE_CRYPT" /etc/default/grub
 
+#enable crypt support in mkinitcpio
+MKINITCPIO_BINARIES="BINARIES=(btrfs nano)"
+MKINITCPIO_HOOKS="HOOKS=(base systemd autodetect keyboard sd-vconsole modconf block sd-encrypt filesystems fsck)"
+#echo $MKINITCPIO_BINARIES
+#echo $MKINITCPIO_HOOKS
+
+sed -i "/^BINARIES=/c$MKINITCPIO_BINARIES" mkinitcpio.conf
+sed -i "/^HOOKS=/c$MKINITCPIO_HOOKS" mkinitcpio.conf
+
 mkinitcpio -P
 
 grub-install --recheck --target=x86_64-efi --efi-directory=/efi --bootloader-id=Arch
