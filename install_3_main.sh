@@ -20,7 +20,7 @@ echo root:$INST_PWD | chpasswd
 
 pacman -Syy --noconfirm --needed base-devel bash-completion openssh grub efibootmgr reflector terminus-font networkmanager dosfstools btrfs-progs e2fsprogs
 
-reflector -c Italy -a 1 --save /etc/pacman.d/mirrorlist
+reflector -c Italy -a 4 --save /etc/pacman.d/mirrorlist
 
 systemctl enable NetworkManager
 systemctl enable sshd
@@ -30,6 +30,24 @@ useradd -m $INST_USER
 echo $INST_USER:$INST_PWD | chpasswd
 
 echo "$INST_USER ALL=(ALL) ALL" >> /etc/sudoers.d/$INST_USER
+
+BOOT_UUID=$(blkid -s UUID -o value /dev/nvme0n1p1)
+SWAP_UUID=$(blkid -s UUID -o value /dev/nvme0n1p2)
+ROOT_UUID=$(blkid -s UUID -o value /dev/nvme0n1p3)
+
+#enable crypt support for grub
+sed -i '/^#GRUB_ENABLE_CRYPTODISK/s/.//' /etc/default/grub
+
+#crypt parameters and resume support for grub
+GRUB_LINE_CRYPT=GRUB_CMDLINE_LINUX=\""rd.luks.name=$ROOT_UUID=cryptroot rd.luks.name=$SWAP_UUID=cryptswap root=/dev/mapper/cryptroot resume=/dev/mapper/cryptswap\""
+
+#echo $GRUB_LINE_CRYPT
+sed -i "/^GRUB_CMDLINE_LINUX=/c$GRUB_LINE_CRYPT" /etc/default/grub
+
+mkinitcpio -P
+
+grub-install --recheck --target=x86_64-efi --efi-directory=/efi --bootloader-id=Arch
+grub-mkconfig -o /boot/grub/grub.cfg
 
 
 /bin/echo -e "\e[1;32mDone! Type exit, umount -a and reboot.\e[0m"
