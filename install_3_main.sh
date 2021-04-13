@@ -8,11 +8,12 @@ ln -sf /usr/share/zoneinfo/Europe/Rome /etc/localtime
 hwclock --systohc
 sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen
 #sed -i '177s/.//' /etc/locale.gen
-echo "LANG=en_US.UTF-8" >> /etc/locale.conf
-echo "KEYMAP=us" >> /etc/vconsole.conf
+locale-gen
+echo "LANG=en_US.UTF-8" > /etc/locale.conf
+echo "KEYMAP=us" > /etc/vconsole.conf
 echo "FONT=ter-122b" >> /etc/vconsole.conf
 echo "FONT_MAP=8859-2" >> /etc/vconsole.conf
-echo "infinity" >> /etc/hostname
+echo "infinity" > /etc/hostname
 echo "127.0.0.1 localhost" >> /etc/hosts
 echo "::1       localhost" >> /etc/hosts
 echo "127.0.1.1 infinity.home infinity" >> /etc/hosts
