@@ -50,8 +50,8 @@ MKINITCPIO_HOOKS="HOOKS=(base systemd autodetect keyboard sd-vconsole modconf bl
 #echo $MKINITCPIO_BINARIES
 #echo $MKINITCPIO_HOOKS
 
-sed -i "/^BINARIES=/c$MKINITCPIO_BINARIES" mkinitcpio.conf
-sed -i "/^HOOKS=/c$MKINITCPIO_HOOKS" mkinitcpio.conf
+sed -i "/^BINARIES=/c$MKINITCPIO_BINARIES" /etc/mkinitcpio.conf
+sed -i "/^HOOKS=/c$MKINITCPIO_HOOKS" /etc/mkinitcpio.conf
 
 mkinitcpio -P
 
