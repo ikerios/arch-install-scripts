@@ -25,5 +25,5 @@ TIMELINE_LIMIT_YEARLY="0"
 
 ###########################
 
-systemctl enable --now snapper-timeline.timer 
-systemctl enable --now snapper-cleanup.timer 
+systemctl enable --now snapper-timeline.timer
+systemctl enable --now snapper-cleanup.timer
