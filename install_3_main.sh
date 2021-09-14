@@ -38,16 +38,16 @@ echo $INST_USER:$INST_PWD | chpasswd
 
 echo "$INST_USER ALL=(ALL) ALL" >> /etc/sudoers.d/$INST_USER
 
-INST_BOOT_UUID=$(blkid -s UUID -o value $INST_INSTALLATION_DEVICE\p1)
-INST_SWAP_UUID=$(blkid -s UUID -o value $INST_INSTALLATION_DEVICE\p2)
-INST_BOOT_UUID=$(blkid -s UUID -o value $INST_INSTALLATION_DEVICE\p3)
-INST_ROOT_UUID=$(blkid -s UUID -o value $INST_INSTALLATION_DEVICE\p4)
+BOOT_UUID=$(blkid -s UUID -o value $INST_INSTALLATION_DEVICE\p1)
+SWAP_UUID=$(blkid -s UUID -o value $INST_INSTALLATION_DEVICE\p2)
+BOOT_UUID=$(blkid -s UUID -o value $INST_INSTALLATION_DEVICE\p3)
+ROOT_UUID=$(blkid -s UUID -o value $INST_INSTALLATION_DEVICE\p4)
 
 #enable crypt support for grub
 sed -i '/^#GRUB_ENABLE_CRYPTODISK/s/.//' /etc/default/grub
 
 #crypt parameters and resume support for grub
-GRUB_LINE_CRYPT=GRUB_CMDLINE_LINUX=\""rd.luks.name=$INST_ROOT_UUID=cryptroot rd.luks.name=$INST_SWAP_UUID=cryptswap rd.luks.name=$INST_BOOT_UUID=cryptboot root=/dev/mapper/cryptroot resume=/dev/mapper/cryptswap\""
+GRUB_LINE_CRYPT=GRUB_CMDLINE_LINUX=\""rd.luks.name=$ROOT_UUID=cryptroot rd.luks.name=$SWAP_UUID=cryptswap rd.luks.name=$BOOT_UUID=cryptboot root=/dev/mapper/cryptroot resume=/dev/mapper/cryptswap\""
 
 #echo $GRUB_LINE_CRYPT
 sed -i "/^GRUB_CMDLINE_LINUX=/c$GRUB_LINE_CRYPT" /etc/default/grub
